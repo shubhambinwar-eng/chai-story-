@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Little Chai, A Little Spark</title>
+<style>
+:root{--wine:#7A2E3A;--wine-d:#5A1F2A;--rose:#D98A93;--blush:#F6DCDA;--cream:#FFF6EE;--bg:#FAF0E8;--ink:#3A2420;--soft:#7A5A52;--line:#E3C7BC;--gold:#C79A5B;
+--heading:Georgia,'Times New Roman',serif;--body:'Trebuchet MS',Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--body);color:var(--ink);background:var(--bg)}
+#app{min-height:100vh;position:relative;overflow:hidden;background:var(--bg)}
+.hero{min-height:94vh;display:grid;place-items:center;padding:32px 22px;position:relative;background:radial-gradient(ellipse at 85% 10%,#F2B8B8 0%,transparent 30%),radial-gradient(ellipse at 5% 90%,#EBCDB4 0%,transparent 30%),var(--bg)}
+.petals{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.petals i{position:absolute;top:-30px;font-style:normal;opacity:0;animation:fall linear forwards}
+@keyframes fall{0%{opacity:0;transform:translateY(0) rotate(0)}12%{opacity:.7}100%{opacity:0;transform:translateY(105vh) translateX(40px) rotate(260deg)}}
+.card{width:min(680px,100%);text-align:center;padding:clamp(28px,7vw,64px) clamp(20px,6vw,54px);border:1px solid var(--line);background:rgba(255,250,246,.8);border-radius:28px;box-shadow:0 18px 55px #7A2E3A1F;position:relative}
+.eyebrow{letter-spacing:.2em;text-transform:uppercase;font-size:11px;color:#A0626B}
+.cup{font-size:60px;margin:16px 0 10px}.heart-beat{display:inline-block;animation:beat 2.4s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.12)}30%{transform:scale(1)}45%{transform:scale(1.08)}}
+h1{font-family:var(--heading);font-size:clamp(42px,8vw,68px);line-height:1.04;font-weight:normal;letter-spacing:-.03em;margin:10px 0 20px;color:var(--wine)}
+.sub{max-width:480px;margin:0 auto;color:var(--soft);line-height:1.85;font-size:15px}
+.divider{width:60px;height:1px;background:var(--gold);margin:26px auto;position:relative}
+.divider:after{content:'♥';position:absolute;left:50%;top:-9px;transform:translateX(-50%);background:#FFF9F5;padding:0 8px;color:var(--rose);font-size:12px}
+button{font:inherit;cursor:pointer;border:0;border-radius:30px;padding:13px 22px;background:var(--wine);color:var(--cream);transition:transform .2s,background .2s}
+button:hover{transform:translateY(-2px);background:var(--wine-d)}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.secondary{background:transparent;color:var(--wine);border:1px solid #C98E96}.secondary:hover{background:var(--blush);color:var(--wine-d)}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:24px}
+#note{display:none;margin:24px auto 0;max-width:440px;padding:20px;background:var(--blush);border-radius:18px;line-height:1.8;animation:appear .5s ease}
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.intro{max-width:760px;margin:0 auto;padding:40px 24px 8px;text-align:center}
+.intro h2,.section-title{font-family:var(--heading);font-size:clamp(28px,5vw,40px);font-weight:normal;color:var(--wine);margin:10px 0 14px}
+.intro p{max-width:620px;margin:0 auto;color:var(--soft);line-height:1.9}
+.sections{max-width:900px;margin:0 auto;padding:12px 22px 70px}
+.panel{padding:clamp(24px,5vw,42px);margin:22px 0;background:rgba(255,250,246,.82);border:1px solid var(--line);border-radius:22px}
+.panel p{line-height:1.85;color:var(--soft)}
+.question-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:22px}
+.qcard{border:1px solid var(--line);background:var(--cream);border-radius:16px;padding:20px}
+.qcard strong{display:block;color:var(--wine);margin-bottom:8px}.qcard p{margin:0;font-size:14px}
+.choices{display:flex;flex-wrap:wrap;gap:9px;margin:16px 0}
+.choice{background:transparent;color:var(--wine);border:1px solid #C98E96;padding:11px 16px}
+.choice:hover{background:var(--blush);color:var(--wine-d)}
+.choice.selected{background:var(--wine);color:var(--cream)}
+.replybox{display:none;margin-top:18px;padding:18px;background:var(--blush);border-radius:15px;line-height:1.8}
+.replybox button{margin-top:12px;padding:9px 16px;font-size:13px}
+.small-note{font-size:12px;color:#9A7068}
+.poem{font-family:var(--heading);font-style:italic;font-size:clamp(18px,3.4vw,23px);line-height:1.9;color:var(--wine);text-align:center;margin:8px auto 0;max-width:520px}
+.poem span{display:block}
+.wish{background:linear-gradient(160deg,#FFF3EC,#F9DEDB);text-align:center}
+.final-note{text-align:center;padding:34px 12px 18px}
+.foot{padding:22px;text-align:center;font-family:var(--heading);font-style:italic;color:#9A7068;font-size:14px}
+@media(max-width:480px){.card{padding:34px 20px}.cup{font-size:50px}.sub{font-size:14px}}
+@media(prefers-color-scheme:dark){
+ :root{--bg:#25181A;--cream:#352325;--ink:#F3E4DD;--soft:#CDB0A8;--line:#5B3E40;--blush:#4A2B30;--wine:#EFA3AC;--wine-d:#F7C0C6}
+ .card,.panel{background:rgba(53,35,37,.85)}button{color:#2A1519}.choice.selected{color:#2A1519}.secondary{color:var(--wine)}
+ .wish{background:linear-gradient(160deg,#3A2427,#4A2B30)}.divider:after{background:#35232599}
+}
+@media(prefers-reduced-motion:reduce){.petals,.heart-beat{display:none}#note{animation:none}}
+</style></head>
+<body><main id="app">
+<section class="hero"><div class="petals" id="petals" aria-hidden="true"></div>
+<article class="card"><div class="eyebrow">a tiny note for a chai artist</div>
+<div class="cup" aria-hidden="true">☕<span class="heart-beat" style="font-size:.5em;vertical-align:top;color:var(--rose)">♥</span></div>
+<h1>A Little Chai,<br>A Little Spark.</h1>
+<p class="sub">Your bio says you might be an artist if making the best cup of chai counts. So naturally, I have a few questions for the artist herself. ☺</p>
+<div class="divider"></div>
+<p class="sub">Not a questionnaire, promise. Just a small excuse to know the person behind that chai-making talent, at your own pace.</p>
+<div class="actions"><button id="open">Open your little note ✨</button><button class="secondary" id="chai">Start with chai ☕</button></div>
+<div id="note" role="status"></div></article></section>
+
+<section class="intro"><div class="eyebrow">beyond the first hello</div>
+<h2>Some conversations feel like the first sip of chai.</h2>
+<p>Warm, a little unexpected, and you want another sip. You mentioned chai, and it made me curious about the artist, not just the cup. We’ve only just started talking, so here are a few easy questions. Answer whichever one feels fun, whenever you have time.</p></section>
+
+<section class="sections">
+<article class="panel"><div class="eyebrow">your everyday world</div><h2 class="section-title">What keeps you busy?</h2>
+<p>I’d love to know a little about what your days look like, without making you feel like you have to explain your whole schedule.</p>
+<div class="question-grid">
+<div class="qcard"><strong>🎨 Work or studies?</strong><p>Are most of your days busy with work, studies, or something creative?</p></div>
+<div class="qcard"><strong>🌿 Your kind of free time</strong><p>When you finally get a little time to yourself, what do you enjoy doing?</p></div>
+<div class="qcard"><strong>☕ The chai ritual</strong><p>Is chai your daily ritual, or only when you’re in the mood to create a masterpiece?</p></div>
+</div></article>
+
+<article class="panel"><div class="eyebrow">if we were a cup of chai</div><h2 class="section-title">Pick your favourite flavour.</h2>
+<p>Every chai has a personality. Tap the one that sounds most like you, and see what it says.</p>
+<div class="choices">
+<button class="choice" data-flavor="adrak">Adrak, with a kick</button>
+<button class="choice" data-flavor="elaichi">Elaichi, soft and sweet</button>
+<button class="choice" data-flavor="masala">Masala, full of surprises</button>
+<button class="choice" data-flavor="kadak">Kadak, no-nonsense</button></div>
+<div class="replybox" id="flavorbox" aria-live="polite"></div></article>
+
+<article class="panel"><div class="eyebrow">pick the easiest question</div><h2 class="section-title">No pressure. You choose.</h2>
+<p>Tap whichever question you’d actually enjoy answering. It makes a little message you can use to start a conversation. Not a test, just a gentle hello.</p>
+<div class="choices">
+<button class="choice" data-reply="busy">Your busy days</button>
+<button class="choice" data-reply="free">Free-time favourite</button>
+<button class="choice" data-reply="chai">Chai artist ☕</button></div>
+<div class="replybox" id="replybox" aria-live="polite"></div>
+<p class="small-note">And if you’re busy right now, no worries at all. Reply whenever you feel like it.</p></article>
+
+<article class="panel"><div class="eyebrow">a few things I’m already curious about</div><h2 class="section-title">Little thoughts, said softly.</h2>
+<div class="poem">
+<span>I wonder what makes you laugh the loudest.</span>
+<span>I wonder what your favourite rainy day sounds like.</span>
+<span>I wonder who gets the first sip of your chai.</span>
+<span>And I wonder if it could be me, someday. ♥</span></div></article>
+
+<article class="panel wish"><div class="eyebrow">a tiny future plan</div><h2 class="section-title">One evening, two cups of chai.</h2>
+<p>Picture a slow evening, light rain on the window, and a good conversation going on. I’ll bring the curiosity, you bring the chai expertise. If we get along and you’re comfortable, maybe we can trade chai recommendations sometime, and see where the conversation goes.</p>
+<div class="actions"><button id="wishbtn">Make a little wish ✨</button></div>
+<div id="wishnote" class="replybox" role="status" style="text-align:center"></div></article>
+
+<div class="final-note"><div class="cup" aria-hidden="true">☕</div>
+<p class="sub">A little warmth, a little curiosity, and space for a reply whenever life allows.</p></div>
+</section>
+<footer class="foot">Made with a little warmth, a lot of curiosity, and absolutely no pressure.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id), note=$('note');
+$('open').onclick=()=>{note.style.display='block';note.textContent='A tiny compliment for the chai artist: your bio gave me a little glimpse of your personality, and it made me smile. I’d love to know more about you, one small conversation at a time. 😊'};
+$('chai').onclick=()=>{note.style.display='block';note.innerHTML='First official question for the chai artist: <strong>masala chai, adrak chai, or your own secret recipe?</strong> ☕<br><small>I promise not to judge the art before the tasting.</small>'};
+
+const flavors={
+ adrak:'Adrak people are warm with a little fire, bold, honest, a bit unpredictable. Honestly, my favourite kind of company. 🔥',
+ elaichi:'Elaichi people are gentle, thoughtful, and leave a lovely fragrance behind in every room. Someone like that is easy to fall into conversation with. 🌸',
+ masala:'Masala people never repeat themselves. Every sip is a new surprise, and I’d happily spend an evening guessing the ingredients. ✨',
+ kadak:'Kadak people know exactly what they want and say it with confidence. I admire that, and I’d never dare serve you weak chai. ☕'};
+const replies={
+ busy:'Hey, I was curious: are you usually busy with work, studies, or something else? No need to share anything personal, I’m just wondering what your days are like 😊',
+ free:'When you finally get some time for yourself, what do you like doing most? I’d like to know what makes you happy outside your busy routine 🙂',
+ chai:'Important question for a self-proclaimed chai artist: what makes your chai the best, the recipe, the technique, or a secret ingredient? ☕'};
+
+document.querySelectorAll('[data-flavor]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('[data-flavor]').forEach(x=>x.classList.remove('selected'));
+ b.classList.add('selected');const box=$('flavorbox');box.style.display='block';box.textContent=flavors[b.dataset.flavor]});
+
+document.querySelectorAll('[data-reply]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('[data-reply]').forEach(x=>x.classList.remove('selected'));
+ b.classList.add('selected');const box=$('replybox'),msg=replies[b.dataset.reply];
+ box.style.display='block';box.textContent=msg;
+ const c=document.createElement('button');c.className='secondary';c.textContent='Copy this message';
+ c.onclick=()=>{const done=()=>c.textContent='Copied ♥';
+  if(navigator.clipboard)navigator.clipboard.writeText(msg).then(done,done);else done()};
+ box.appendChild(document.createElement('br'));box.appendChild(c)});
+
+const wishes=['May your next cup of chai be the best one yet. ☕','May a good conversation find you today. ♥','May the rain arrive right when the chai is ready. 🌧️','May someone make you smile without even trying. 😊'];let w=0;
+$('wishbtn').onclick=()=>{const n=$('wishnote');n.style.display='block';n.textContent=wishes[w++%wishes.length];burst()};
+
+function petal(){const p=document.createElement('i'),h=['♥','🌸','✿'][Math.floor(Math.random()*3)];
+ p.textContent=h;p.style.left=Math.random()*100+'%';p.style.fontSize=(12+Math.random()*14)+'px';
+ p.style.color='#D98A93';p.style.animationDuration=(7+Math.random()*6)+'s';
+ $('petals').appendChild(p);setTimeout(()=>p.remove(),14000)}
+function burst(){for(let i=0;i<8;i++)setTimeout(petal,i*150)}
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches){burst();setInterval(petal,1800)}
+</script></body></html>
